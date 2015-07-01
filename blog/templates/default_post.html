@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+
+<h2> Add a new post </h2>
+
+<form role="form" action="{{ url_for('add_default_post', pk=post.pk) }}" method=post>
+    <div class="form-group">
+        <label for="text">Name: </label>
+        <input class="form-control" type=text name=name value='{{post.name}}' > 
+    </div>
+
+    <div class="form-group">
+        <label for="text">Tags: </label>
+        <input class="form-control"  type=text name=tags 
+                value='{% for tag in post.tags %}{{tag.name}}{% endfor %}'>
+    </div>
+
+    <div class='subform' id='post_default'>
+        <label for="text">Content: </label>
+        <textarea class="form-control" name=default_content rows='10'>
+            '{{post.content.text}}' 
+        </textarea>
+    </div>
+    
+    <div class="checkbox">
+        <label>
+        <input type="checkbox" name="public" value="public">
+        Make public.</label>
+    </div>
+
+    <div class="form-group">
+        <input class="form-control"  id='add_post' type=submit value=Save>
+    </div>
+</form>
+
+{{super()}}
+{% endblock %}

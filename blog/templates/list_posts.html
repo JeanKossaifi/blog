@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  {% for post in posts %}
+        {% include "post.html" %}
+  {% endfor %}
+  <br/> <br/> <br/>
+  {{ super() }}
+{% endblock %}

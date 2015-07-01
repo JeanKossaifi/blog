@@ -1,0 +1,28 @@
+{# templates/post.html #}
+
+{# x-small screen, small screen, large screen 
+   bootstrap has 12 columns, so 1 per column - col-xs-12, etc... #}
+<li class="post col-xs-12 col-sm-6 col-lg-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      {{ post.name }}
+      <a
+        class="btn btn-primary btn-sm edit-archive pull-right"
+        rote="button"
+        data-post="{{ post.name }}"
+        {% if post.category == 'default' %}
+            href="{{ url_for('add_default_post', pk=post.pk) }}"
+        {% elif post.category == 'todo' %}
+            href="{{ url_for('add_todo_post', pk=post.pk) }}"
+        {% endif %}
+      > open </a>
+    </div>
+  
+    <div class="panel-body">
+        Category: {{ post.category }}
+        <br>
+        Created: {{ post.created_at }}
+        <br>
+    </div>
+  </div>
+</li>

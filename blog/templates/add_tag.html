@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h2>Add a tag</h2>
+  Existing tags: 
+  {% for name in tags %}
+    {{name}},
+  {% endfor %}
+
+  <form role="form" action="{{ url_for('add_tag') }}" method=post>
+      <div class="form-group">
+        <label for="text">New tag name: </label>
+        <input class="form-control" type=text name=tagname> 
+      </div>
+        <div class="form-group">
+        <input class="form-control"  id='add_tag' type=submit value=Add>
+      </div>
+  </form>
+{% endblock %}
+
+
