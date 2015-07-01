@@ -39,3 +39,9 @@ Run the test server:
 ```
 python manage.py runserver
 ```
+
+The app
+-------
+
+All posts (default article, todo list, etc) can be public or private.
+Private items (and public ones) can be accessed through ```/posts``` whereas public ones are listed at ```/blog```.
