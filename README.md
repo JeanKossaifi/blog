@@ -1,7 +1,7 @@
 blog
 ====
 
-tdlr:
+tl;dr:
 A flask and mongoengine backed web-app for note-taking, whether it is TODO list, article or simple reminder.
 
 Installation
