@@ -22,6 +22,3 @@ def add_api():
 
 add_views()
 add_api()
-
-if __name__ == '__main__':
-    app.run()

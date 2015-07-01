@@ -2,6 +2,7 @@ from blog.models import *
 from blog import app, db
 from flask import request, jsonify, render_template
 import json
+import markdown
 
 
 @app.route('/')
@@ -75,8 +76,7 @@ def add_default_post(pk=None):
         if pk is not None:
             post = Post.objects.get(pk=pk)
         else:
-            post = Post()
-            content = DefaultContent()
+            post = Post(content=DefaultContent())
         return render_template('default_post.html',
                                 post=post)
 
