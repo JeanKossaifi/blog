@@ -12,14 +12,14 @@ Pre-requisite: have mongodb installed -- in ubuntu:
 sudo apt-get install mongodb
 ```
 
-Setting-up the virtualenv (creates a virtualenv called venv, ignored by git (cf .gitignore))
+Setting-up the virtualenv (creates a virtualenv called '.venv', ignored by git (cf .gitignore))
 ```
-pyvenv ./venv
+pyvenv ./.venv
 ```
 
 Activate your newly created virtualenv:
 ```
-source activate venv/bin/activate
+source activate ./.venv/bin/activate
 ```
 
 Get all the requirements:
