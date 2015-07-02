@@ -56,7 +56,7 @@ class Post(db.Document):
 
     meta = {
         'allow_inheritance': True,
-        'indexes': ['-created_at', 'tags'],
+        'indexes': ['-created_at', 'tags', 'category', 'status'],
         'ordering': ['-created_at', 'tags'],
     }
 

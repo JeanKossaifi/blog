@@ -33,7 +33,11 @@ def add_tag():
         tag_name = request.form['tagname']
         new_tag = Tag(name=tag_name)
         new_tag.save()
-        return 'Hello, you have added something ;)'
+        return '''Hello, you have added something ;)
+                <a href='/posts'>
+                back to the list
+                </a>
+                '''
     tags = [tag['name'] for tag in Tag.objects.all()]
     return render_template('add_tag.html', tags=tags)
            

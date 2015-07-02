@@ -47,9 +47,9 @@
         <label for="text">Content: </label>
         <textarea class="form-control" 
                   id=default_content
-                  name=default_content rows='10'>
-            {{post.content.text}} 
-        </textarea>
+                  onchange="update('default_content', 'preview');"
+                  onkeyup="update('default_content', 'preview');"
+                  name=default_content rows='10'>{{post.content.text}}</textarea>
     </div>
 
     <button type="button" 
