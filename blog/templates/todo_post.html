@@ -25,6 +25,25 @@
         n_todos = n_todos + 1;
         document.getElementById('n_elements').value=n_todos;
     }
+
+    {# Add a tag #}
+    function add_tag() {
+        var text = '<input class="form-control"  type=text name=tags>';
+        document.getElementById('tags').innerHTML += text;
+    }
+    
+    {# Tag autocomplete #}
+    $.ajax({
+        url: '/_search_tags'
+        }).done(function (data) {
+            $('#tags').autocomplete({
+                source: data.tags,
+                minLength: 1
+        });
+    });
+
+
+
 </script>
 {% endblock %}
 
@@ -39,11 +58,19 @@
         <input class="form-control" type=text name=name value='{{post.name}}' > 
     </div>
 
-    <div class="form-group">
+
+    <div class="form-group" id='tags'>
         <label for="text">Tags: </label>
-        <input class="form-control"  type=text name=tags 
-                value='{% for tag in post.tags %}{{tag.name}}{% endfor %}'>
+        {% for tag in post.tags %}
+            <input class="form-control"  type=text name=tags value='{{tag.name}}' autocomplete=off>
+        {% endfor %}
+        {% if not post.tags %}
+            <input class="form-control"  type=text name=tags value='{{tag.name}}' autocomplete=off>
+        {% endif %}
     </div>
+    <button type="button" class="btn btn-primary btn-lg" onclick="add_tag()">
+            Add tag.
+    </button>
 
     <div class='subform' id='todo'>
         <div id='todo_sub'>
@@ -59,14 +86,16 @@
                 </div>
             {% endfor %}
         </div>
-        <button type="button" class="btn btn-primary btn-lg" onclick="add_todo('')">
+        <button type="button" class="btn btn-primary btn-lg" onclick="add_todo('')"
+            {% if post.status == 'public' %} checked {%endif%} >
             Add todo elements.
         </button>
     </div>
     
     <div class="checkbox">
         <label>
-        <input type="checkbox" name="public" value="public">
+        <input type="checkbox" name="public" value="public"
+            {% if post.status == 'public' %} checked {%endif%} >
         Make public.</label>
     </div>
 

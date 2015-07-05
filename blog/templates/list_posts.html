@@ -1,9 +1,15 @@
 {% extends "layout.html" %}
 
 {% block body %}
+  {% if not posts %}
+    Nothing to see here. <br> <br>
+    You haven't created any article yet... Start <a href='/'>adding articles</a>.
+  {% endif %}
+
   {% for post in posts %}
         {% include "post.html" %}
   {% endfor %}
   <br/> <br/> <br/>
+
   {{ super() }}
 {% endblock %}

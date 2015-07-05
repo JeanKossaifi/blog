@@ -7,6 +7,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
 
     <script>
+    {# Update markdown preview of the content #}
     function update(source_id, target_id) {
         var content = document.getElementById(source_id).value;
         $.post('/markdown', {content:content}, function(result) {
@@ -14,6 +15,15 @@
         });
     }
 
+    
+    {# Add a tag #}
+    function add_tag() {
+        var text = '<input class="form-control"  type=text name=tags>';
+        document.getElementById('tags').innerHTML += text;
+    }
+
+
+    {# Tag autocomplete #}
     $.ajax({
         url: '/_search_tags'
         }).done(function (data) {
@@ -36,12 +46,20 @@
         <input class="form-control" type=text name=name value='{{post.name}}' > 
     </div>
 
-    <div class="form-group">
+   <div class="form-group" id='tags'>
         <label for="text">Tags: </label>
-        <input class="form-control"  type=text name='tags' id='tags'
-                autocomplete=off
-                value='{% for tag in post.tags %}{{tag.name}}{% endfor %}'>
+        {% for tag in post.tags %}
+            <input class="form-control"  type=text name=tags value='{{tag.name}}' autocomplete=off>
+        {% endfor %}
+        {% if not post.tags %}
+            <input class="form-control"  type=text name=tags value='{{tag.name}}' autocomplete=off>
+        {% endif %}
     </div>
+    <button type="button" class="btn btn-primary btn-lg" onclick="add_tag()">
+            Add tag.
+    </button>
+
+
 
     <div class='subform' id='post_default'>
         <label for="text">Content: </label>
@@ -61,7 +79,8 @@
 
     <div class="checkbox">
         <label>
-        <input type="checkbox" name="public" value="public">
+        <input type="checkbox" name="public" value="public"
+            {% if post.status == 'public' %} checked {%endif%} >
         Make public.</label>
     </div>
 

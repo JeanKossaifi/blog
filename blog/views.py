@@ -42,13 +42,26 @@ def add_tag():
     return render_template('add_tag.html', tags=tags)
            
 
+def parse_tags(tag_str):
+    """ Takes a string containing tags as input and returns list of tag objects
+
+    Parameters
+    ----------
+    tag_str: str
+    
+    Returns
+    -------
+    Tag list.
+    """
+
+
 @app.route('/post/default/<string:pk>', methods=['GET', 'POST'])
 @app.route('/post/default', methods=['GET', 'POST'])
 @login_required
 def add_default_post(pk=None):
     if request.method == 'POST':
         name = request.form['name']
-        tags = request.form['tags']
+        tags = request.form.getlist('tags')
         if request.form.get('public'):
             status = 'public'
         else:
@@ -58,19 +71,19 @@ def add_default_post(pk=None):
 
         # TODO: replace tags with a list of tags
         # Currently only one tag name
-        tag = Tag.objects.get(name=tags)
+        tags = [Tag.objects.get(name=tag) for tag in tags]
         category = 'default'
         if pk is None:
             post = Post(name=name,
                         category=category,
-                        tags = [tag],
+                        tags = tags,
                         content=content,
                         status=status)
         else:
             post = Post.objects.get(pk=pk)
             post.name = name
             post.category = category
-            post.tags = [tag]
+            post.tags = tags
             post.content = content
             post.status = status
         post.save()
@@ -91,13 +104,12 @@ def add_default_post(pk=None):
 def add_todo_post(pk=None):
     if request.method == 'POST':
         name = request.form['name']
-        tags = request.form['tags']
+        tags = request.form.getlist('tags')
         if request.form.get('public'):
             status = 'public'
         else:
             status = 'private'
         content = TodoContent()
-        print(request.form)
         n_elements = int(request.form.get('n_elements'))
         for value in range(n_elements):
             key = str(value)
@@ -107,19 +119,19 @@ def add_todo_post(pk=None):
 
         # TODO: replace tags with a list of tags
         # Currently only one tag name
-        tag = Tag.objects.get(name=tags)
+        tags = [Tag.objects.get(name=tag) for tag in tags]
         category = 'todo'
         if pk is None:
             post = Post(name=name,
                         category=category,
-                        tags = [tag],
+                        tags = tags,
                         content=content,
                         status=status)
         else:
             post = Post.objects.get(pk=pk)
             post.name = name
             post.category = category
-            post.tags = [tag]
+            post.tags = tags
             post.content = content
             post.status = status
         post.save()
