@@ -42,19 +42,6 @@ def add_tag():
     return render_template('add_tag.html', tags=tags)
            
 
-def parse_tags(tag_str):
-    """ Takes a string containing tags as input and returns list of tag objects
-
-    Parameters
-    ----------
-    tag_str: str
-    
-    Returns
-    -------
-    Tag list.
-    """
-
-
 @app.route('/post/default/<string:pk>', methods=['GET', 'POST'])
 @app.route('/post/default', methods=['GET', 'POST'])
 @login_required
