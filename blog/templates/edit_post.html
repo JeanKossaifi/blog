@@ -7,15 +7,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
 
     <script>
-    {# Update markdown preview of the content #}
-    function update(source_id, target_id) {
-        var content = document.getElementById(source_id).value;
-        $.post('/markdown', {content:content}, function(result) {
-                document.getElementById(target_id).innerHTML = result;
-        });
-    }
-
-    
+        
     {# Add a tag #}
     function add_tag() {
         var text = '<input class="form-control"  type=text name=tags>';
@@ -40,7 +32,7 @@
 
 <h2> Add a new post </h2>
 
-<form role="form" action="{{ url_for('add_default_post', pk=post.pk) }}" method=post>
+<form role="form" action="{{ url_for('edit_post', category=category, pk=post.pk) }}" method=post>
     <div class="form-group">
         <label for="text">Name: </label>
         <input class="form-control" type=text name=name value='{{post.name}}' > 
@@ -52,7 +44,7 @@
             <input class="form-control"  type=text name=tags value='{{tag.name}}' autocomplete=off>
         {% endfor %}
         {% if not post.tags %}
-            <input class="form-control"  type=text name=tags value='{{tag.name}}' autocomplete=off>
+            <input class="form-control"  type=text name=tags value='' autocomplete=off>
         {% endif %}
     </div>
     <button type="button" class="btn btn-primary btn-lg" onclick="add_tag()">
@@ -60,22 +52,11 @@
     </button>
 
 
-
-    <div class='subform' id='post_default'>
-        <label for="text">Content: </label>
-        <textarea class="form-control" 
-                  id=default_content
-                  onchange="update('default_content', 'preview');"
-                  onkeyup="update('default_content', 'preview');"
-                  name=default_content rows='10'>{{post.content.text}}</textarea>
-    </div>
-
-    <button type="button" 
-            class="btn btn-primary btn-lg"
-            onclick="update('default_content', 'preview');">
-            Update preview.
-    </button>
-    <br>
+    {% if category == 'default' %}
+        {% include 'edit_default.html' %}
+    {% elif category == 'todo' %}
+        {% include 'edit_todo.html' %}
+    {% endif %}
 
     <div class="checkbox">
         <label>
@@ -88,18 +69,6 @@
         <input class="form-control"  id='add_post' type=submit value=Save>
     </div>
 </form>
-
-{# Preview field #}
-<label for="text">Preview: </label>
-<br>
-<br>
-<div id="preview" class="span2 well">
-    {# Add this to center text: style="text-align: center"> #}
-    preview
-</div>
-<br>
-
-
 
 {{super()}}
 {% endblock %}

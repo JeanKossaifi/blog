@@ -3,6 +3,7 @@ from blog import app, db
 from flask import request, jsonify
 import json
 import markdown
+from docutils.core import publish_parts
 
 @app.route('/tag/<string:tag_name>',
            methods=['POST', 'PUT', 'GET'])
@@ -21,26 +22,34 @@ def api_tag(tag_name):
     else:
         return 'No existing result'
 
+
 @app.route('/tags/')
 def api_tags():
     tags = [tag.name for tag in Tag.objects.all()]
     return jsonify(tags=tags)
+
 
 @app.route('/markdown', methods=['POST'])
 def get_markdown():
     content = request.form.get('content')
     return markdown.markdown(content)
 
+
+@app.route('/rst', methods=['POST'])
+def get_rst():
+    content = request.form.get('content')
+    #return publish_string(content, writer_name='html')
+    html = publish_parts(content, writer_name='html')['html_body']
+    print(html)
+    return html
+
+
 @app.route('/_search_tags', methods=['GET'])
 def api_search_tags():
-    print('#############')
-    print(request.form)
     search = request.form.get('search')
     if search is None:
         search = ''
-    print(search)
     tags = [tag.name for tag in Tag.objects.all() if tag.name.startswith(search)]
-    print(tags)
     return jsonify(tags=tags)
 
 

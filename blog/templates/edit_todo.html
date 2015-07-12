@@ -1,0 +1,44 @@
+<script>
+    {# Number of todo lists #}
+    var n_todos = {{post.content.elements|length|default(0)}}
+
+    {# Function to add a todo-field #}
+    function add_todo(text) {
+        var new_div = document.createElement('div');
+
+        new_div.className = 'form-group';
+        new_div.setAttribute('name', n_todos);
+        new_div.setAttribute('id', 'todo' + n_todos);
+        var input_name = n_todos;
+        var label = n_todos;
+
+        new_div.innerHTML = '\
+            <label for="text">' + label +' </label>\
+            <input class="form-control"  type=text name=' + input_name + '>';
+
+        document.getElementById('todo_sub').appendChild(new_div);
+        n_todos = n_todos + 1;
+        document.getElementById('n_elements').value=n_todos;
+    }
+</script>
+
+<div class='subform' id='todo'>
+    <div id='todo_sub'>
+        <input type="hidden"
+            name="n_elements"
+            id="n_elements" 
+            value={{post.content.elements|length|default(0)}}>
+        {% for element in post.content.elements %}
+            <div class='form-group'>
+                <label for="text"> {{element.key}} </label>
+                <input class="form-control" type=text name={{element.key}}
+                value="{{element.content}}">
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" class="btn btn-primary btn-lg" onclick="add_todo('')"
+        {% if post.status == 'public' %} checked {%endif%} >
+        Add todo elements.
+    </button>
+</div>
+

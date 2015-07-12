@@ -7,6 +7,33 @@
 {% endblock %}
 
 {% block body %}
+    <a type="button" 
+            class="btn btn-primary btn-lg"
+            href="{{ url_for('new_post', category='default') }}">
+        Add default article.
+    </a>
+
+    <a type="button" 
+            class="btn btn-primary btn-lg"
+            href="{{ url_for('new_post', category='todo') }}">
+        Add todo list.
+    </a>
+
+
+    <a  
+            class="btn btn-primary btn-lg"
+            href="{{url_for('post_list')}}">
+        List existing articles.
+    </a>
+
+    <a  
+            class="btn btn-primary btn-lg"
+            href="{{url_for('new_tag')}}">
+        Add tags.
+    </a>
+    <br/>
+
+
     {{super()}}
     <br> 
     <div class="footer" style="text-align: center">

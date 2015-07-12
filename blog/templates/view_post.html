@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1> {{post.name}} ({{post.status}}) </h1>
+
+<h2> Tags: {% for tag in post.tags %} '{{tag.name}}', {% endfor %} </h2>
+
+    {% if category == 'default' %}
+        {% include 'view_default.html' %}
+    {% elif category == 'todo' %}
+        {% include 'view_todo.html' %}
+    {% endif %}
+
+{{super()}}
+{% endblock %}

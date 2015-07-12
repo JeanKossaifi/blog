@@ -5,30 +5,5 @@
 <h1>Well hello there!</h1>
 
 What do you want to do?
-<br>
-<a type="button" 
-        class="btn btn-primary btn-lg"
-        href="{{ url_for('add_default_post') }}">
-    Add default article.
-</a>
-
-<a type="button" 
-        class="btn btn-primary btn-lg"
-        href="{{ url_for('add_todo_post') }}">
-    Add todo list.
-</a>
-
-
-<a  
-        class="btn btn-primary btn-lg"
-        href="{{url_for('list_posts')}}">
-    List existing articles.
-</a>
-
-<a  
-        class="btn btn-primary btn-lg"
-        href="{{url_for('add_tag')}}">
-    Add tags.
-</a>
 
 {% endblock %}
