@@ -48,8 +48,7 @@ def parse_content(category, form):
     """
     if category == 'default':
         content = DefaultContent()
-        content.text = form['default_content']
-        print(content.text)
+        content.content = form['default_content']
 
     elif category == 'todo':
         content = TodoContent()
@@ -59,7 +58,6 @@ def parse_content(category, form):
             element = TodoElement(content=form.get(key),
                                   key=value)
             content.elements.append(element)
-            print(form.get(key))
 
     return content
 
@@ -70,7 +68,7 @@ def new_post(category):
     """
 
     if category == 'default':
-        content = DefaultContent(text='')
+        content = DefaultContent(content='')
 
     elif category == 'todo':
         content = TodoContent()
@@ -94,7 +92,7 @@ def view_post(category, pk):
 
 
 @app.route('/post/edit/<string:category>/<string:pk>', methods=['GET', 'POST'])
-@app.route('/post/edit/<string:category>', methods=['GET', 'POST'])
+@app.route('/post/edit/<string:category>', methods=['POST'])
 @login_required
 def edit_post(category, pk=None):
     if request.method == 'POST':
@@ -120,7 +118,7 @@ def edit_post(category, pk=None):
         post.status = status
         post.save()
 
-        return redirect(url_for('view_post', category=category, pk=pk))
+        return redirect(url_for('view_post', category=category, pk=post.pk))
     
     elif request.method == 'GET':
         if pk is not None:

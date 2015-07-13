@@ -33,7 +33,7 @@ class Tag(db.Document):
     name = db.StringField(max_length=50, unique=True)
 
 class DefaultContent(db.EmbeddedDocument):
-    text = db.StringField(default='')
+    content = db.StringField(default='')
 
 class TodoElement(db.EmbeddedDocument):
     content = db.StringField(default='')
@@ -42,6 +42,13 @@ class TodoElement(db.EmbeddedDocument):
 
 class TodoContent(db.EmbeddedDocument):
     elements = db.ListField(db.EmbeddedDocumentField('TodoElement'))
+
+class ReviewContent(db.EmbeddedDocument):
+    title = db.StringField()
+    year = db.IntField()
+    authors = db.ListField(db.StringField)
+    journal = db.StringField()
+    content = db.StringField()
 
 class Post(db.Document):
     created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
@@ -59,4 +66,5 @@ class Post(db.Document):
         'indexes': ['-created_at', 'tags', 'category', 'status'],
         'ordering': ['-created_at', 'tags'],
     }
+
 

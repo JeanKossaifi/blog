@@ -28,11 +28,11 @@ def init():
     tag.save()
     tag2 = Tag(name='tag')
     tag2.save()
-    content = DefaultContent(text='coucou new article')
+    content = DefaultContent(content='hello!!\n new article')
     post = Post(name='name article',
                       content=content,
                       category='default',
-                      tags = [tag],
+                      tags = [tag, tag2],
                       status = 'private')
     post.save()
 

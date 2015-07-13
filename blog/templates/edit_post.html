@@ -17,7 +17,7 @@
 
     {# Tag autocomplete #}
     $.ajax({
-        url: '/_search_tags'
+        url: '{{url_for("api_search_tags")}}'
         }).done(function (data) {
             $('#tags').autocomplete({
                 source: data.tags,
