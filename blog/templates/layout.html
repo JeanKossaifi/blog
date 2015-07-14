@@ -14,6 +14,8 @@
             <a class="navbar-brand" href="{{url_for('blog')}}"> Blog </a>
         </div>
         <div>
+
+        {% if current_user.is_authenticated() %}
         <ul class="nav navbar-nav">
             <li class="active"><a href="{{ url_for('post_list') }}"> All posts </a></li>
             <li><a href="{{ url_for('new_tag') }}"> New tag </a></li>
@@ -27,7 +29,14 @@
                 </ul>
             </li>
         </ul>
-        </div>
+        <p class="navbar-text">Signed in {# as {{current_user.id}}#} </p>
+
+        {% else %}
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="{{ url_for('blog') }}"> all posts </a></li>
+        </ul>
+        <p class="navbar-text"> Not signed in. </p>
+        {% endif %}
     </div>
     </nav>
 

@@ -26,6 +26,10 @@
         <br>
         Created: {{ post.created_at }}
         <br>
+        Tags:
+        {% for tag in post.tags %}
+            <span class="label label-default">{{tag.name}}</span>
+        {% endfor %}
     </div>
   </div>
 </li>

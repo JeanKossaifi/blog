@@ -44,7 +44,7 @@ def init():
 # Create a user to test with
 @app.before_first_request
 def create_user():
-    user_datastore.create_user(email='jean', password='jean')
+    user_datastore.create_user(email='jean', password='jean', username='jean')
 
 
 # Turn on debugger by default and reloader

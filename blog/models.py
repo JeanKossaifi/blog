@@ -11,14 +11,14 @@ class Role(db.Document, RoleMixin):
 
 class User(db.Document, UserMixin):
     email = db.StringField(max_length=255)
-    name = db.StringField(max_length=255)
+    username = db.StringField(max_length=255, unique=True)
     password = db.StringField(max_length=255)
     active = db.BooleanField(default=True)
     confirmed_at = db.DateTimeField()
     roles = db.ListField(db.ReferenceField(Role), default=[])
 
     meta = {
-        'indexes': ['-confirmed_at', 'email', 'name']
+        'indexes': ['-confirmed_at', 'email', 'username']
     }
 
 
