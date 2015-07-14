@@ -59,6 +59,12 @@ def parse_content(category, form):
                                   key=value)
             content.elements.append(element)
 
+    elif category == 'review':
+        content = ReviewContent()
+        content.content = form['review_content']
+        content.journal = form['journal']
+        content.title = form['title']
+
     return content
 
 @app.route('/post/new/<string:category>', methods=['GET'])
@@ -72,6 +78,9 @@ def new_post(category):
 
     elif category == 'todo':
         content = TodoContent()
+
+    elif category == 'review':
+        content = ReviewContent()
 
     post = Post(content=content)
     return render_template('edit_post.html',
@@ -105,7 +114,6 @@ def edit_post(category, pk=None):
         tags = [Tag.objects.get(name=tag) for tag in tags]
 
         content = parse_content(category, request.form)
-        print('####### ', content)
 
         if pk is None:
             post = Post()

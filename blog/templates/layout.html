@@ -10,7 +10,7 @@
     <a type="button" 
             class="btn btn-primary btn-lg"
             href="{{ url_for('new_post', category='default') }}">
-        Add default article.
+        Add default post.
     </a>
 
     <a type="button" 
@@ -19,16 +19,19 @@
         Add todo list.
     </a>
 
-
-    <a  
+    <a type="button" 
             class="btn btn-primary btn-lg"
-            href="{{url_for('post_list')}}">
+            href="{{ url_for('new_post', category='review') }}">
+        Add review.
+    </a>
+
+    <a  class="btn btn-primary btn-lg"
+        href="{{url_for('post_list')}}">
         List existing articles.
     </a>
 
-    <a  
-            class="btn btn-primary btn-lg"
-            href="{{url_for('new_tag')}}">
+    <a  class="btn btn-primary btn-lg"
+        href="{{url_for('new_tag')}}">
         Add tags.
     </a>
     <br/>

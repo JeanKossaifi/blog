@@ -10,6 +10,8 @@
         {% include 'view_default.html' %}
     {% elif category == 'todo' %}
         {% include 'view_todo.html' %}
+    {% elif category == 'review' %}
+        {% include 'view_review.html' %}
     {% endif %}
 
 {{super()}}
