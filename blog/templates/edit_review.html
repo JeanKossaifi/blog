@@ -1,0 +1,50 @@
+<script>
+{# Update preview of the content #}
+function update(source_id, target_id) {
+    var content = document.getElementById(source_id).value;
+    $.post('{{url_for('get_rst')}}', {content:content}, function(result) {
+            document.getElementById(target_id).innerHTML = result;
+    });
+}
+</script>
+
+<div class='subform'>
+    <label for="text">Title: </label>
+    <input class="form-control" name="title"
+        type="text" value="{{post.content.title}}"> 
+</div>
+
+
+<div class='subform'>
+    <label for="text">Journal: </label>
+    <input class="form-control" name="journal"
+        type="text" value="{{post.content.journal}}"> 
+</div>
+
+
+<div class='subform' id='post_review'>
+    <label for="text">Content: </label>
+    <textarea class="form-control" 
+            id=review_content
+            onchange="update('review_content', 'preview');"
+            onkeyup="update('review_content', 'preview');"
+            name=review_content rows='10'>{{post.content.content}}</textarea>
+</div>
+
+<button type="button" 
+        class="btn btn-primary btn-lg"
+        onclick="update('review_content', 'preview');">
+        Update preview.
+</button>
+<br>
+
+{# Preview field #}
+<label for="text">Preview: </label>
+<br>
+<br>
+<div id="preview" class="span2 well">
+    {# Add this to center text: style="text-align: center"> #}
+    preview
+</div>
+<br>
+

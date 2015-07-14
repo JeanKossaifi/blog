@@ -1,0 +1,5 @@
+{# Preview field #}
+<h1> Title: {{post.content.title }} </h1>
+<h2> Journal: {{post.content.journal}} </h2>
+<h2> Content: </h2>
+{{rst(post.content.content)|safe}}
