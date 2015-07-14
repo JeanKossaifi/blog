@@ -7,35 +7,29 @@
 {% endblock %}
 
 {% block body %}
-    <a type="button" 
-            class="btn btn-primary btn-lg"
-            href="{{ url_for('new_post', category='default') }}">
-        Add default post.
-    </a>
 
-    <a type="button" 
-            class="btn btn-primary btn-lg"
-            href="{{ url_for('new_post', category='todo') }}">
-        Add todo list.
-    </a>
-
-    <a type="button" 
-            class="btn btn-primary btn-lg"
-            href="{{ url_for('new_post', category='review') }}">
-        Add review.
-    </a>
-
-    <a  class="btn btn-primary btn-lg"
-        href="{{url_for('post_list')}}">
-        List existing articles.
-    </a>
-
-    <a  class="btn btn-primary btn-lg"
-        href="{{url_for('new_tag')}}">
-        Add tags.
-    </a>
-    <br/>
-
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{url_for('blog')}}"> Blog </a>
+        </div>
+        <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="{{ url_for('post_list') }}"> All posts </a></li>
+            <li><a href="{{ url_for('new_tag') }}"> New tag </a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">New post
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('new_post', category='default') }}"> Default post. </a></li>
+                    <li><a href="{{ url_for('new_post', category='todo') }}"> To-do list. </a></li>
+                    <li><a href="{{ url_for('new_post', category='review') }}"> Review post. </a></li>
+                </ul>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
 
     {{super()}}
     <br> 
