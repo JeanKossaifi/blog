@@ -10,10 +10,22 @@
         
     {# Add a tag #}
     function add_tag() {
-        var text = '<input class="form-control"  type=text name=tags>';
-        document.getElementById('tags').innerHTML += text;
-    }
+        var tag_name = document.getElementById('new_tag').value;
+        if (current_tags.indexOf(tag_name) == -1) {
+            var text = '<big> <span style="padding-right: 0.1em"> <span name=tags class="tag label label-info" > <input type="hidden" name="tags" value="' + 
+                        tag_name + '"> ' + tag_name +
+                        '<a> &nbsp <i class="remove glyphicon glyphicon-remove-sign glyphicon-white" onclick="remove_tag(this)"></i></a> &nbsp </span></span> </big>';
+            document.getElementById('tag_list').innerHTML += text;
+            current_tags.push(tag_name);
 
+        }
+        document.getElementById('new_tag').value='';
+    }
+    
+    {# Remove a tag by removing the span that encloses it #}
+    remove_tag = function(element) {
+        element.closest('big').remove();
+    }
 
     {# Tag autocomplete #}
     $.ajax({
@@ -24,6 +36,8 @@
                 minLength: 1
         });
     });
+
+    var current_tags = [{% for tag in post.tags %} '{{tag.name}}', {% endfor%}];
 
     </script>
 {% endblock %}
@@ -38,18 +52,33 @@
         <input class="form-control" type=text name=name value='{{post.name}}' > 
     </div>
 
-   <div class="form-group" id='tags'>
+    <div id='tag_list'>
         <label for="text">Tags: </label>
         {% for tag in post.tags %}
-            <input class="form-control"  type=text name=tags value='{{tag.name}}' autocomplete=off>
+            <big>
+            <span style="padding-right: 0.1em">
+            <span name=tags class="tag label label-info label-lg" >
+            <input type="hidden" name="tags" value="{{tag.name}}">
+            {{tag.name}}
+            <a> &nbsp<i class="remove glyphicon glyphicon-remove-sign {#text-danger#}" onclick="remove_tag(this)"></i></a> 
+            </span>
+            </span>
+            </big>
         {% endfor %}
-        {% if not post.tags %}
-            <input class="form-control"  type=text name=tags value='' autocomplete=off>
-        {% endif %}
     </div>
-    <button type="button" class="btn btn-primary btn-lg" onclick="add_tag()">
-            Add tag.
-    </button>
+    <div class="form-group form-inline" id='tags'>
+        <label for="text">Add a new tag to the post: </label>
+        <input class="form-control"  type=text id=new_tag name=new_tag value='' autocomplete=off
+               {# if user presses enter, we want to add a new tag.
+               To do this:
+               onkeydown: if key is enter (KeyCode == 13), add tag.
+               Finally, prevent the default action of the key (which would submit the form)
+               #}
+               onkeydown="if (event.keyCode == 13) {event.preventDefault(); document.getElementById('new_tag_button').click();}">
+        <button type="button" id='new_tag_button' class="btn btn-primary btn-md" onclick="add_tag()">
+                Add.
+        </button>
+    </div>
 
 
     {% if category == 'default' %}

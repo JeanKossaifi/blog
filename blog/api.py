@@ -39,7 +39,8 @@ def get_markdown():
 def get_rst():
     content = request.form.get('content')
     #return publish_string(content, writer_name='html')
-    html = publish_parts(content, writer_name='html')['html_body']
+    html = publish_parts(source=content, 
+            writer_name='html')['html_body']
     print(html)
     return html
 

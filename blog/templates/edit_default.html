@@ -6,31 +6,44 @@ function update(source_id, target_id) {
             document.getElementById(target_id).innerHTML = result;
     });
 }
+
 </script>
 
-<div class='subform' id='post_default'>
-    <label for="text">Content: </label>
+
+<div class='subform col-xs-12 col-lg-6' id='post_default'>
+    <label for="text" class="inline-form">Content: </label>
+
     <textarea class="form-control" 
             id=default_content
             onchange="update('default_content', 'preview');"
             onkeyup="update('default_content', 'preview');"
-            name=default_content rows='10'>{{post.content.content}}</textarea>
+            name=default_content rows='20'>{{post.content.content}}
+    </textarea>
 </div>
 
+
+{# Preview field #}
+<div class='subform col-xs-12 col-lg-6' id='post_default'>
+    <label for="text" class='col-xs-8 col-lg-8'>Preview: </label>
+    <br>
+    <br>
+    <div id="preview" class="span2 well">
+        {# Add this to center text: style="text-align: center"> #}
+        preview
+    </div>
+</div>
+
+<br>
+<br>
+
 <button type="button" 
-        class="btn btn-primary btn-lg"
+        class="btn btn-primary btn-md"
         onclick="update('default_content', 'preview');">
         Update preview.
 </button>
 <br>
 
-{# Preview field #}
-<label for="text">Preview: </label>
-<br>
-<br>
-<div id="preview" class="span2 well">
-    {# Add this to center text: style="text-align: center"> #}
-    preview
-</div>
-<br>
+
+
+
 
