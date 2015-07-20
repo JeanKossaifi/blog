@@ -21,6 +21,10 @@ Activate your newly created virtualenv:
 ```
 source activate ./.venv/bin/activate
 ```
+Alternatively: 
+```
+source activate ./.venv/
+```
 
 Get all the requirements:
 ```
@@ -44,4 +48,4 @@ The app
 -------
 
 All posts (default article, todo list, etc) can be public or private.
-Private items (and public ones) can be accessed through ```/posts``` whereas public ones are listed at ```/blog```.
+Private items (and public ones) can be accessed through ```/post/list``` whereas public ones are listed at ```/blog```.
