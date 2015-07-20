@@ -4,12 +4,16 @@
             name="n_elements"
             id="n_elements" 
             value={{post.content.elements|length|default(0)}}>
+	<ol>
         {% for element in post.content.elements %}
             <div class='form-group'>
-                <label for="text"> {{element.key}} </label>
-                {{element.content}}"
+                <!--<label for="text"> {{element.key}} </label>-->
+		<li>
+                {{element.content}}
+		</li>
             </div>
         {% endfor %}
+	</ol>
     </div>
 </div>
 
