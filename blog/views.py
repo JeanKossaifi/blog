@@ -4,7 +4,7 @@ from flask import request, jsonify, render_template, redirect, url_for
 import json
 import markdown
 from docutils.core import publish_parts
-
+from flask.ext.login import logout_user
 
 @app.route('/')
 @login_required
@@ -136,6 +136,12 @@ def edit_post(category, pk=None):
                                 post=post)
         else: # Shouldn't happen..
             return redirect(url_for('new_post', category=category))
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 @app.context_processor
 def custom_jinja_fun():
