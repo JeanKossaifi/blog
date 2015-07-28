@@ -29,8 +29,10 @@
                 </ul>
             </li>
         </ul>
-        <p class="navbar-text">Signed in {# as {{current_user.id}}#} </p>
-	<p class="navbar-text"><a href="{{ url_for('logout') }}">Logout</a></p>
+        <ul class="nav navbar-nav navbar-right">
+            <p class="navbar-text">Signed in {# as {{current_user.id}}#} </p>
+            <p class="navbar-text"><a href="{{ url_for('logout') }}">Logout</a></p>
+        </ul>
         {% else %}
         <ul class="nav navbar-nav">
             <li class="active"><a href="{{ url_for('blog') }}"> all posts </a></li>
