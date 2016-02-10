@@ -1,10 +1,10 @@
 from blog.models import *
 from blog import app, db
-from flask import request, jsonify, render_template, redirect, url_for
+from flask import request, jsonify, render_template, redirect, url_for, session
 import json
 import markdown
 from docutils.core import publish_parts
-from flask.ext.login import logout_user
+from flask.ext.security import logout_user, current_user
 
 @app.route('/')
 @login_required
@@ -17,6 +17,10 @@ def blog():
     posts = Post.objects(status='public')
     return render_template('post_list.html', 
                            posts=posts)
+
+@app.route('/debug')
+def debug():
+    crash
 
 
 @app.route('/tag/new', methods=['GET', 'POST'])
@@ -38,7 +42,7 @@ def new_tag():
 @app.route('/post/list')
 @login_required
 def post_list():
-    posts = Post.objects.all()
+    posts = Post.get_list(current_user)
     return render_template('post_list.html', 
                            posts=posts)
 

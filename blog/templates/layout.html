@@ -30,7 +30,7 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <p class="navbar-text">Signed in {# as {{current_user.id}}#} </p>
+            <p class="navbar-text">Signed in as {{current_user.username}} </p>
             <p class="navbar-text"><a href="{{ url_for('logout') }}">Logout</a></p>
         </ul>
         {% else %}

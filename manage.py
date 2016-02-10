@@ -19,6 +19,7 @@ manager = Manager(app)
 def drop():
     Tag.drop_collection()
     Post.drop_collection()
+    User.drop_collection()
     print('Database dropped.')
 
 @manager.command
@@ -29,12 +30,36 @@ def init():
     tag2 = Tag(name='tag')
     tag2.save()
     content = DefaultContent(content='hello!!\n new article')
+    user_datastore.create_user(email='test', password='test', username='test')
+    user_datastore.create_user(email='user', password='user', username='user')
+    user_datastore.create_user(email='jean', password='jean', username='jean')
+    jean = User.objects.get(username='jean')
+    test = User.objects.get(username='test')
     post = Post(name='name article',
-                      content=content,
-                      category='default',
-                      tags = [tag, tag2],
-                      status = 'private')
-    post.save()
+                owner=jean,        
+                content=content,
+                category='default',
+                tags = [tag, tag2],
+                status = 'private')
+    post.save(user=jean)
+    post = Post(name='test article',
+                owner=test,        
+                content=content,
+                category='default',
+                tags = [tag, tag2],
+                status = 'private')
+    post.save(user=test)
+    post = Post(name='test article 2',
+                owner=test,        
+                read=[jean],
+                content=content,
+                category='default',
+                tags = [tag, tag2],
+                status = 'public')
+    post.save(user=test)
+
+
+
 
 # To save the db in a file:
 # mongoexport -d blog -c blog -o '/path/savefile.json'
@@ -44,8 +69,8 @@ def init():
 # Create a user to test with
 @app.before_first_request
 def create_user():
-    user_datastore.create_user(email='jean', password='jean', username='jean')
-
+    pass
+    #user_datastore.create_user(email='jean', password='jean', username='jean')
 
 # Turn on debugger by default and reloader
 manager.add_command("runserver", Server(

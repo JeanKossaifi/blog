@@ -8,10 +8,9 @@ class Role(db.Document, RoleMixin):
     name = db.StringField(max_length=80, unique=True)
     description = db.StringField(max_length=255)
 
-
 class User(db.Document, UserMixin):
-    email = db.StringField(max_length=255)
-    username = db.StringField(max_length=255, unique=True)
+    email = db.StringField(max_length=255, unique=True)
+    username = db.StringField(max_length=255, unique=True)#, primary_key=True)
     password = db.StringField(max_length=255)
     active = db.BooleanField(default=True)
     confirmed_at = db.DateTimeField()
@@ -21,13 +20,11 @@ class User(db.Document, UserMixin):
         'indexes': ['-confirmed_at', 'email', 'username']
     }
 
-
 class Comment(db.EmbeddedDocument):
     created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
     content = db.StringField()
     name = db.StringField(max_length=120)
     email = db.StringField(max_length=120)
-
 
 class Tag(db.Document):
     name = db.StringField(max_length=50, unique=True)
@@ -53,10 +50,12 @@ class ReviewContent(db.EmbeddedDocument):
 class Post(db.Document):
     created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
     name = db.StringField(max_length=120, default='')
-    #author = db.ReferenceField(User)
+    owner = db.ReferenceField(User, required=True)
+    read = db.ListField(db.ReferenceField(User), default=[])
+    write = db.ListField(db.ReferenceField(User), default=[])
     content = db.GenericEmbeddedDocumentField()
     category = db.StringField(default='default')
-    tags = db.ListField(db.ReferenceField('Tag'))
+    tags = db.ListField(db.ReferenceField('Tag'), default=[])
     comments = db.ListField(db.EmbeddedDocumentField('Comment'))
     # Status: 'public' or 'private'
     status = db.StringField(max_length=120, default='private')
@@ -66,5 +65,34 @@ class Post(db.Document):
         'indexes': ['-created_at', 'tags', 'category', 'status'],
         'ordering': ['-created_at', 'tags'],
     }
+
+    @classmethod
+    def get_list(cls, user, *args, **kwargs):
+        posts = cls.objects.all(*args, **kwargs)
+        res = [post for post in posts if post.can_read(user)]
+        return res
+
+
+
+    def can_edit(self, user):
+        if user == self.owner:
+            return True
+        elif user in self.write:
+            return True
+        return False
+    
+    def can_read(self, user):
+        if user == self.owner:
+            return True
+        elif user in self.write:
+            return True
+        elif user in self.read:
+            return True
+        return False
+
+            
+    def save(self, user, *args, **kwargs):
+        if self.owner == user:
+            super(Post, self).save(*args, **kwargs)
 
 
