@@ -72,8 +72,6 @@ class Post(db.Document):
         res = [post for post in posts if post.can_read(user)]
         return res
 
-
-
     def can_edit(self, user):
         if user == self.owner:
             return True

@@ -1,6 +1,6 @@
 from blog.models import *
 from blog import app, db
-from flask import request, jsonify, render_template, redirect, url_for, session
+from flask import request, jsonify, render_template, redirect, url_for, session, abort
 import json
 import markdown
 from docutils.core import publish_parts
@@ -98,9 +98,12 @@ def view_post(category, pk):
     """Returns a new content for the given category
     """
     post = Post.objects.get(pk=pk)
-    return render_template('view_post.html',
-                           category=category,
-                           post=post)
+    if post.can_read(current_user):
+        return render_template('view_post.html',
+                               category=category,
+                               post=post)
+    else:
+        raise abort(404)
 
 
 
@@ -128,18 +131,19 @@ def edit_post(category, pk=None):
         post.tags = tags
         post.content = content
         post.status = status
-        post.save()
+        post.save(user=current_user)
 
         return redirect(url_for('view_post', category=category, pk=post.pk))
     
     elif request.method == 'GET':
         if pk is not None:
             post = Post.objects.get(pk=pk)
-            return render_template('edit_post.html',
-                                category=category,
-                                post=post)
-        else: # Shouldn't happen..
-            return redirect(url_for('new_post', category=category))
+            if post.can_edit(current_user):
+                return render_template('edit_post.html',
+                                       category=category,
+                                       post=post)
+        abort(404)
+        #return redirect(url_for('new_post', category=category))
 
 @app.route('/logout')
 @login_required
