@@ -35,6 +35,7 @@ class DefaultContent(db.EmbeddedDocument):
 class TodoElement(db.EmbeddedDocument):
     content = db.StringField(default='')
     key = db.IntField()
+    done = db.BooleanField(default=False)
     status = db.StringField(max_length=50, default='todo')
 
 class TodoContent(db.EmbeddedDocument):
@@ -61,16 +62,20 @@ class Post(db.Document):
     status = db.StringField(max_length=120, default='private')
 
     meta = {
-        'allow_inheritance': True,
-        'indexes': ['-created_at', 'tags', 'category', 'status'],
+        'indexes': ['-created_at', 'tags', 'category', 'name',
+                    'status', 'owner', 'read', 'write'],
         'ordering': ['-created_at', 'tags'],
     }
 
     @classmethod
-    def get_list(cls, user, *args, **kwargs):
+    def list(cls, user, *args, **kwargs):
         posts = cls.objects.all(*args, **kwargs)
         res = [post for post in posts if post.can_read(user)]
         return res
+
+    @db.queryset_manager
+    def public(doc_cls, queryset):
+        return queryset.filter(status='public')
 
     def can_edit(self, user):
         if user == self.owner:

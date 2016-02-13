@@ -14,7 +14,7 @@ def home():
 
 @app.route('/blog')
 def blog():
-    posts = Post.objects(status='public')
+    posts = Post.public()
     return render_template('post_list.html', 
                            posts=posts)
 
@@ -42,7 +42,7 @@ def new_tag():
 @app.route('/post/list')
 @login_required
 def post_list():
-    posts = Post.get_list(current_user)
+    posts = Post.list(current_user)
     return render_template('post_list.html', 
                            posts=posts)
 
@@ -145,11 +145,13 @@ def edit_post(category, pk=None):
         abort(404)
         #return redirect(url_for('new_post', category=category))
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
 
 @app.context_processor
 def custom_jinja_fun():
